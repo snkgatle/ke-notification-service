@@ -1,0 +1,29 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: notification-service
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    spec:
+      containers:
+      - image: gcr.io/kgatle-empire-services/notification-service:latest
+        resources:
+          limits:
+            cpu: 1000m
+            memory: 512Mi
+        env:
+        - name: PROJECT_ID
+          value: "kgatle-empire-services"
+        - name: ENVIRONMENT
+          value: "production"
+        - name: APP_NAME
+          value: "NotificationService"
+        - name: OTP_COLLECTION
+          value: "otps"
+        - name: PUB_SUB_TOPIC
+          value: "notifications-topic"
+        ports:
+        - containerPort: 8080
+      timeoutSeconds: 300
