@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from app.models.schemas import NotificationRequest, OTPRequest, OTPVerifyRequest, APIResponse, PubSubMessage
 from app.core.pubsub import NotificationPublisher
 from app.otp.service import OTPService
-from app.notifications.email import SendGridEmailAdapter
+from app.notifications.email import BrevoEmailAdapter
 from app.notifications.sms import TwilioSMSAdapter
 import base64
 import json
@@ -123,7 +123,7 @@ async def process_notification_worker(
         logger.info("processing_worker_message", type=notification_type, recipient=recipient)
 
         if notification_type == "email":
-            adapter = SendGridEmailAdapter()
+            adapter = BrevoEmailAdapter()
         elif notification_type == "sms":
             adapter = TwilioSMSAdapter()
         else:

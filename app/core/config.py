@@ -22,8 +22,8 @@ class Settings(BaseSettings):
     TWILIO_AUTH_TOKEN: Optional[str] = None
     TWILIO_PHONE_NUMBER: Optional[str] = None
     
-    SENDGRID_API_KEY: Optional[str] = None
-    SENDGRID_FROM_EMAIL: Optional[str] = "notifications@example.com"
+    BREVO_API_KEY: Optional[str] = None
+    BREVO_FROM_EMAIL: Optional[str] = "notifications@example.com"
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
@@ -42,7 +42,7 @@ class Settings(BaseSettings):
                 self.TWILIO_ACCOUNT_SID = get_secret("TWILIO_ACCOUNT_SID")
                 self.TWILIO_AUTH_TOKEN = get_secret("TWILIO_AUTH_TOKEN")
                 self.TWILIO_PHONE_NUMBER = get_secret("TWILIO_PHONE_NUMBER")
-                self.SENDGRID_API_KEY = get_secret("SENDGRID_API_KEY")
+                self.BREVO_API_KEY = get_secret("BREVO_API_KEY")
             except Exception as e:
                 # Log error in real application
                 print(f"Error fetching secrets: {e}")
