@@ -12,7 +12,20 @@ settings = get_settings()
 
 app = FastAPI(
     title=settings.APP_NAME,
+    description="""
+    High-throughput Notification Service optimized for Antigravity environment.
+    
+    ### Features
+    * **Asynchronous Notifications**: Offload delivery to Pub/Sub to maintain <100ms API latency.
+    * **Secure OTP Management**: Cryptographically secure generator with atomic Firestore lifecycle.
+    * **Modular Notifiers**: Pluggable adapters for Twilio, SendGrid, and more.
+    """,
     version="1.0.0",
+    contact={
+        "name": "Kgatle Empire Services",
+        "url": "https://example.com/support",
+        "email": "support@example.com",
+    },
     docs_url="/docs",
     redoc_url="/redoc"
 )

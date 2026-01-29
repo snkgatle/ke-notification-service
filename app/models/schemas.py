@@ -7,8 +7,27 @@ class NotificationRequest(BaseModel):
     type: str = Field(..., pattern="^(sms|email)$")
     metadata: Optional[Dict[str, Any]] = None
 
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "recipient": "+1234567890",
+                "message": "Hello from Antigravity!",
+                "type": "sms",
+                "metadata": {"template_id": "welcome_01"}
+            }
+        }
+    }
+
 class OTPRequest(BaseModel):
     identifier: str = Field(..., description="Unique identifier for the user (e.g., email or phone)")
+
+    model_config = {
+        "json_schema_extra": {
+            "example": {
+                "identifier": "user@example.com"
+            }
+        }
+    }
 
 class OTPVerifyRequest(BaseModel):
     identifier: str

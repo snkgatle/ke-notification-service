@@ -19,7 +19,13 @@ def get_notification_publisher():
 def get_otp_service():
     return OTPService()
 
-@router.post("/notify", response_model=APIResponse)
+@router.post(
+    "/notify", 
+    response_model=APIResponse,
+    tags=["Notifications"],
+    summary="Enqueue a notification",
+    description="Publishes notification metadata to GCP Pub/Sub for asynchronous delivery via Twilio or SendGrid."
+)
 async def send_notification(
     request: NotificationRequest,
     publisher: Annotated[NotificationPublisher, Depends(get_notification_publisher)]
@@ -46,7 +52,13 @@ async def send_notification(
         data={"message_id": str(message_id)}
     )
 
-@router.post("/otp/generate", response_model=APIResponse)
+@router.post(
+    "/otp/generate", 
+    response_model=APIResponse,
+    tags=["OTP Management"],
+    summary="Generate OTP",
+    description="Generates a 6-digit secure OTP and stores it in Firestore with a TTL."
+)
 async def generate_otp(
     request: OTPRequest,
     otp_service: Annotated[OTPService, Depends(get_otp_service)]
@@ -60,7 +72,13 @@ async def generate_otp(
         data={"identifier": request.identifier} # Don't return the OTP in production!
     )
 
-@router.post("/otp/verify", response_model=APIResponse)
+@router.post(
+    "/otp/verify", 
+    response_model=APIResponse,
+    tags=["OTP Management"],
+    summary="Verify OTP",
+    description="Validates the OTP and atomically consumes it (deletes from Firestore) if valid."
+)
 async def verify_otp(
     request: OTPVerifyRequest,
     otp_service: Annotated[OTPService, Depends(get_otp_service)]
@@ -79,7 +97,12 @@ async def verify_otp(
         message="OTP verified successfully"
     )
 
-@router.post("/worker/process")
+@router.post(
+    "/worker/process",
+    tags=["Internal/Worker"],
+    summary="Pub/Sub Push Handler",
+    include_in_schema=False # Internal endpoint, hide from public docs if preferred
+)
 async def process_notification_worker(
     request: PubSubMessage
 ):
